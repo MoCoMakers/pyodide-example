@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/draggable.css')}}">
+  </head>
+
+  <body>
+    <div id="main-area"></div>
+    <script>
+      async function main() {
+        let pyodide = await loadPyodide();
+        await pyodide.loadPackage("micropip");
+        const micropip = pyodide.pyimport("micropip");
+        /** Required packages **/
+        await micropip.install("pyodide-py");
+
+        let py_path = "{{ url_for('static', filename='py/demo3.py') }}";
+
+        pyodide.runPython(await (await fetch(py_path)).text());
+      };
+
+      main();
+    </script>
+  </body>
+</html>
